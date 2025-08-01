@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
 import sqlite3
 
+#pyinstaller --onefile --noconsole --name database_explorer database_explorer.py
+
+
 def otevri_databazi():
     global soubor
     soubor = filedialog.askopenfilename(filetypes=[("SQLite databáze", "*.db *.sqlite")])
@@ -78,6 +81,7 @@ def vymazat_tab():
 # GUI
 okno = tk.Tk()
 okno.title("Univerzální SQLite prohlížeč")
+okno.iconbitmap("ico.ico")
 
 frame_ovladani = tk.Frame(okno)
 frame_ovladani.pack(pady=10)
