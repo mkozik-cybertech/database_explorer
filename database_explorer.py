@@ -55,6 +55,26 @@ def vyber_a_nacti_tab(*args):
     except Exception as e:
         messagebox.showerror("Chyba", f"Nepodařilo se načíst tabulku:\n{e}")
 
+def vymazat_tab():
+    nazev_tab = combo_tabulek.get()
+    if not nazev_tab:
+        return
+    potvrzeni = messagebox.askyesno("Potvrzení", f"Opravdu chcete vymazat VŠECHNA data z tabulky '{nazev_tab}'?")
+    if potvrzeni:
+        try:
+            conn = sqlite3.connect(soubor)
+            cursor = conn.cursor()
+            cursor.execute(f"DELETE FROM {nazev_tab}")
+            conn.commit()
+            conn.close()
+            messagebox.showinfo("Hotovo", f"Tabulka '{nazev_tab}' byla vyprázdněna.")
+            vyber_a_nacti_tab()
+        except Exception as e:
+            messagebox.showerror("Chyba", f"Nepodařilo se vymazat tabulku:\n{e}")
+
+
+
+
 # GUI
 okno = tk.Tk()
 okno.title("Univerzální SQLite prohlížeč")
@@ -68,6 +88,9 @@ btn_otevrit.pack(side=tk.LEFT, padx=5)
 combo_tabulek = ttk.Combobox(frame_ovladani, state="readonly")
 combo_tabulek.pack(side=tk.LEFT, padx=5)
 combo_tabulek.bind("<<ComboboxSelected>>", vyber_a_nacti_tab)
+
+btn_vymazat = tk.Button(frame_ovladani, text="Vymazat tabulku", command=vymazat_tab)
+btn_vymazat.pack(side=tk.LEFT, padx=5)
 
 frame_tabulka = tk.Frame(okno)
 frame_tabulka.pack(padx=10, pady=10)
